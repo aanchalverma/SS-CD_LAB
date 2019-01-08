@@ -1,0 +1,48 @@
+%{
+#include<stdio.h>
+#include<string.h>
+int noprt=0,nopnd=0,top=-1,i=0,j=0;
+char opnd[10][10],oprt[10][10];
+%}
+%%
+"(" {top++;}
+")" {top--;}
+"+"|"*" {noprt++;
+strcpy(oprt[i],yytext);
+i++;
+}
+[0-9]+ {nopnd++;
+strcpy(opnd[j],yytext);
+j++;
+}
+%%
+int yywrap()
+{
+return 1;
+}
+
+}
+
+int main()
+{
+int k;
+printf("Enter the expression at end press ^D\n");
+yylex();
+if(top==-1&&(nopnd-noprt)==1)
+{
+printf("The expression is valid\n");
+printf("No of operators=%d\n",i);
+printf("The operators are\n");
+for(k=0;k<i;k++)
+printf("%s\n",oprt[k]);
+printf("No of identifiers are=%d\n",j);
+printf("The identifiers are\n");
+for(k=0;k<j;k++)
+printf("%s\n",opnd[k]);
+}
+else
+{
+printf("The expression is invalid");
+return 0;
+}
+}
